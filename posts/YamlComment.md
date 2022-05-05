@@ -1,4 +1,5 @@
-> 原文: <https://github.com/osfans/trime/wiki/trimer小知识(1)---Yaml文件开头注释是什么意思？>
+> 原文: <https://github.com/osfans/trime/wiki/trimer小知识(1)---Yaml文件开头注释是什么意思？>  
+> 更新时间：2017/12/24
 
 编辑小狼毫的方案及配置项文件时，通常会看到这样文件开头：
 

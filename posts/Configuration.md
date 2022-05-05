@@ -1,4 +1,5 @@
-> 原文: <https://github.com/rime/home/wiki/Configuration>
+> 原文: <https://github.com/rime/home/wiki/Configuration>  
+> 更新时间：2020/07/25
 
 Rime 配置文件，用于设置输入法引擎、输入法客户端的运行参数，也包括输入方案及词典配置。
 

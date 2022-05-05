@@ -1,4 +1,5 @@
-> 原文: <https://github.com/rime/home/wiki/SpellingAlgebra>
+> 原文: <https://github.com/rime/home/wiki/SpellingAlgebra>  
+> 更新时间：2019/01/26
 
 ## 拼写运算
 

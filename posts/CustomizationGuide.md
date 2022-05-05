@@ -1,4 +1,5 @@
-> 原文: <https://github.com/rime/home/wiki/CustomizationGuide>
+> 原文: <https://github.com/rime/home/wiki/CustomizationGuide>  
+> 更新时间：2021/07/05
 
 ## 必知必会
 

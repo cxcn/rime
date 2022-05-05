@@ -141,7 +141,7 @@ key2: *a #引用
 
 person: 
   basic: &b #标记一个对象
-    name: xingaqr
+    name: cxcn
     age: 1
   like: &c #标记一个列表
     - music

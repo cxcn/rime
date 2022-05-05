@@ -1,4 +1,5 @@
-> 原文: <https://github.com/osfans/trime/wiki/trimer小知识(2)---配置文件中的一些yaml语法>
+> 原文: <https://github.com/osfans/trime/wiki/trimer小知识(2)---配置文件中的一些yaml语法>  
+> 更新时间：2018/09/4
 
 ## Yaml 简介
 

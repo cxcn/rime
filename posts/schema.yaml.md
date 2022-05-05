@@ -1,71 +1,80 @@
-> 原文: <https://github.com/LEOYoon-Tsaw/Rime_collections/blob/master/Rime_description.md>
+> 原文: <https://github.com/LEOYoon-Tsaw/Rime_collections/blob/master/Rime_description.md>  
+> 更新时间：2022/04/26
 
-## 开始之前
+# `Schema.yaml` 詳解
+
+## 開始之前
 
 ```yaml
 # Rime schema
 # encoding: utf-8
 ```
 
-## 描述档
+## 描述檔
 
-1. `name:` 方案的显示名偁〔即出现于方案选单中以示人的，通常为中文〕
-2. `schema_id:` 方案内部名，在代码中引用此方案时以此名为正，通常由英文、数字、下划线组成
-3. `author:` 发明人、撰写者。如果您对方案做出了修改，请保留原作者名，并将自己的名字加在后面
-4. `description:` 请简要描述方案历史、码表来源、该方案规则等
-5. `dependencies:` 如果本方案依赖于其它方案〔通常来说会依赖其它方案做为反查，抑或是两种或多种方案混用时〕
-6. `version:` 版本号，在发布新版前请确保已陞版本号
+1. `name:` 方案的顯示名偁〔即出現於方案選單中以示人的，通常爲中文〕
+2. `schema_id:` 方案內部名，在代碼中引用此方案時以此名爲正，通常由英文、數字、下劃線組成
+3. `author:` 發明人、撰寫者。如果您對方案做出了修改，請保留原作者名，並將自己的名字加在後面
+4. `description:` 請簡要描述方案歷史、碼表來源、該方案規則等
+5. `dependencies:` 如果本方案依賴於其它方案〔通常來說會依頼其它方案做爲反查，抑或是兩種或多種方案混用時〕
+6. `version:` 版本號，在發佈新版前請確保已陞版本號
 
 #### **示例**
 
 ```yaml
 schema:
-name: '苍颉检字法'
-schema_id: cangjie6
-author:
-  - '发明人 朱邦复先生、沈红莲女士'
-dependencies:
-  - luna_pinyin
-  - jyutping
-  - zyenpheng
-description: |
-  第六代仓颉输入法
-  码表由雪斋、惜缘和crazy4u整理
-version: 0.19
+  name: "蒼頡檢字法"
+  schema_id: cangjie6
+  author:
+    - "發明人 朱邦復先生、沈紅蓮女士"
+  dependencies:
+    - luna_pinyin
+    - jyutping
+    - zyenpheng
+  description: |
+    第六代倉頡輸入法
+    碼表由雪齋、惜緣和crazy4u整理
+  version: 0.19
 ```
 
-## 开关
+## 開關
 
-通常包含以下五个：
+通常包含以下數個，但並不限於此，自定義濾鏡皆可設置開關調控
 
-1. `ascii_mode` 是中英文转换开关。预设`0`为中文，`1`为英文
-2. `full_shape` 是全角符号／半角符号开关。注意，开启全角时英文字母亦为全角。`0`为半角，`1`为全角
-3. `extended_charset` 是字符集开关。`0`为 CJK 基本字符集，`1`为 CJK 全字符集
-   - 仅`table_translator`可用
-4. `simplification` 是转化字开关。一般情况下与上同，`0`为不开启转化，`1`为转化。
-5. `ascii_punct` 是中西文标点转换开关，`0`为中文句读，`1`为西文标点。
+1. `ascii_mode` 是中英文轉換開關。預設`0`爲中文，`1`爲英文
 
-- 此选项名偁可自定义，亦可添加多套替换用字方案：
+2. `full_shape` 是全角符號／半角符號開關。注意，開啓全角時英文字母亦爲全角。`0`爲半角，`1`爲全角
 
-```yaml
-- name: zh_cn
-  states: ['汉字', '汉字']
-  reset: 0
-```
+3. `extended_charset` 是字符集開關。`0`爲 CJK 基本字符集，`1`爲 CJK 全字符集
 
-或
+   - 僅`table_translator`可用
 
-```yaml
-- options: [zh_trad, zh_cn, zh_mars]
-  states:
-    - 字型 → 汉字
-    - 字型 → 汉字
-    - 字型 → 䕼茡
-  reset: 0
-```
+4. `ascii_punct` 是中西文標點轉換開關，`0`爲中文句讀，`1`爲西文標點。
 
-- `states:` 可不写，如不写则此开关存在但不可见，可由快捷键操作
-- `reset:` 设定默认状态〔`reset`可不写，此时切换窗口时不会重置到默认状态〕
+5. `simplification` 是轉化字開關。一般情況下與上同，`0`爲不開啓轉化，`1`爲轉化。
+
+   - 所有關關選項名偁可自定義，可用快捷鍵切換：該名偁可用於`key_binder/bindings`中的`toggle:`後
+
+   ```yaml
+   - name: simplification
+     states: ["漢字", "汉字"]
+     reset: 0
+   ```
+
+   - 亦可使用多選開關，同樣支持快捷鍵：`options`名偁用於`key_binder/bindings`時，使用`set_option:`或`unset_option:`開啓或關閉某一個
+
+   ```yaml
+   - options: [ zh_trad, zh_cn, zh_mars ]
+     states:
+       - 字型 → 漢字
+       - 字型 → 汉字
+       - 字型 → 䕼茡
+     reset: 0
+   ```
+
+   - `name`/`options`名：須與`simplifier`中`option_name`相同
+   - `states`：可不寫，如不寫則此開關存在但不可見，可由快捷鍵操作
+   - `reset`：設定默認狀態〔`reset`可不寫，此時切換窗口時不會重置到默認狀態〕
 
 #### **示例**
 
@@ -73,78 +82,94 @@ version: 0.19
 switches:
   - name: ascii_mode
     reset: 0
-    states: ['中文', '西文']
+    states: ["中文", "西文"]
   - name: full_shape
-    states: ['半角', '全角']
+    states: ["半角", "全角"]
   - name: extended_charset
-    states: ['通用', '增广']
+    states: ["通用", "增廣"]
   - name: simplification
-    states: ['汉字', '汉字']
+    states: ["漢字", "汉字"]
   - name: ascii_punct
-    states: ['句读', '符号']
+    states: ["句讀", "符號"]
 ```
 
 ## 引擎
 
-> 以下**加粗**项为可细配者，*斜体*者为不常用者
+- 以下**加粗**項爲可細配者，*斜體*者爲不常用者
 
-引擎分四组：
+引擎分四組：
 
 ### 一、`processors`
 
-- 这批组件处理各类按键消息
+- 這批組件處理各類按鍵消息
 
-1.  `ascii_composer` 处理西文模式及中西文切
-2.  **`recognizer`** 与`matcher`搭配，处理符合特定规则的输入码，如网址、反查等`tags`
-3.  **`key_binder`** 在特定条件下将按键绑定到其他按键，如重定义逗号、句号为候选翻页、开关快捷键等
-4.  **`speller`** 拼写处理器，接受字符按键，编辑输入
-5.  **`punctuator`** 句读处理器，将单个字符按键直接映射为标点符号或文字
-6.  `selector` 选字处理器，处理数字选字键〔可以换成别的哦〕、上、下候选定位、换页
-7.  `navigator` 处理输入栏内的光标移动
-8.  `express_editor` 编辑器，处理空格、回车上屏、回退键
-9.  _`fluid_editor`_ 句式编辑器，用于以空格断词、回车上屏的【注音】、【语句流】等输入方案，替换`express_editor`
-10. _`chord_composer`_ 和弦作曲家或曰并击处理器，用于【宫保拼音】等多键并击的输入方案
+1. `ascii_composer` 處理西文模式及中西文切
+2. **`recognizer`** 與`matcher`搭配，處理符合特定規則的輸入碼，如網址、反查等`tags`
+3. **`key_binder`** 在特定條件下將按鍵綁定到其他按鍵，如重定義逗號、句號爲候選翻頁、開關快捷鍵等
+4. **`speller`** 拼寫處理器，接受字符按鍵，編輯輸入
+5. **`punctuator`** 句讀處理器，將單個字符按鍵直接映射爲標點符號或文字
+6. `selector` 選字處理器，處理數字選字鍵〔可以換成別的哦〕、上、下候選定位、換頁
+7. `navigator` 處理輸入欄內的光標移動
+8. `express_editor` 編輯器，處理空格、回車上屏、回退鍵
+9. _`fluid_editor`_ 句式編輯器，用於以空格斷詞、回車上屏的【注音】、【語句流】等輸入方案，替換`express_editor`
+10. _`chord_composer`_ 和絃作曲家或曰並擊處理器，用於【宮保拼音】等多鍵並擊的輸入方案
+11. `lua_processor` 使用`lua`自定義按鍵，後接`@`+`lua`函數名
+
+    - `lua`函數名即用戶文件夾內`rime.lua`中函數名，參數爲`(key, env)`
 
 ### 二、`segmentors`
 
-- 这批组件识别不同内容类型，将输入码分段并加上`tag`
+- 這批組件識別不同內容類型，將輸入碼分段並加上`tag`
 
-1.  `ascii_segmentor` 标识西文段落〔譬如在西文模式下〕字母直接上屏
-2.  `matcher` 配合`recognizer`标识符合特定规则的段落，如网址、反查等，加上特定`tag`
-3.  **`abc_segmentor`** 标识常规的文字段落，加上`abc`这个`tag`
-4.  `punct_segmentor` 标识句读段落〔键入标点符号用〕加上`punct`这个`tag`
-5.  `fallback_segmentor` 标识其他未标识段落
-6.  **`affix_segmentor`** 用户自定义`tag`
-    - 此项可加载多个实例，后接`@`+`tag`名
+1. `ascii_segmentor` 標識西文段落〔譬如在西文模式下〕字母直接上屛
+2. `matcher` 配合`recognizer`標識符合特定規則的段落，如網址、反查等，加上特定`tag`
+3. **`abc_segmentor`** 標識常規的文字段落，加上`abc`這個`tag`
+4. `punct_segmentor` 標識句讀段落〔鍵入標點符號用〕加上`punct`這個`tag`
+5. `fallback_segmentor` 標識其他未標識段落
+6. **`affix_segmentor`** 用戶自定義`tag`
+
+   - 此項可加載多個實例，後接`@`+`tag`名
+
+7. _`lua_segmentor`_ 使用`lua`自定義切分，後接`@`+`lua`函數名
 
 ### 三、`translators`
 
-- 这批组件翻译特定类型的编码段为一组候选文字
+- 這批組件翻譯特定類型的編碼段爲一組候選文字
 
-1.  `echo_translator` 没有其他候选字时，回显输入码〔输入码可以`Shift`+`Enter`上屏〕
-2.  `punct_translator` 配合`punct_segmentor`转换标点符号
-3.  **`table_translator`** 码表翻译器，用于仓颉、五笔等基于码表的输入方案
-    - 此项可加载多个实例，后接`@`+翻译器名〔如：`cangjie`、`wubi`等〕
-4.  **`script_translator`** 脚本翻译器，用于拼音、粤拼等基于音节表的输入方案
-    - 此项可加载多个实例，后接`@`+翻译器名〔如：`pinyin`、`jyutping`等〕
-5.  _`reverse_lookup_translator`_ 反查翻译器，用另一种编码方案查码
+1. `echo_translator` 沒有其他候選字時，回顯輸入碼〔輸入碼可以`Shift`+`Enter`上屛〕
+2. `punct_translator` 配合`punct_segmentor`轉換標點符號
+3. **`table_translator`** 碼表翻譯器，用於倉頡、五筆等基於碼表的輸入方案
+
+- 此項可加載多個實例，後接`@`+翻譯器名〔如：`cangjie`、`wubi`等〕1. **`script_translator`** 腳本翻譯器，用於拼音、粵拼等基於音節表的輸入方案
+- 此項可加載多個實例，後接`@`+翻譯器名〔如：`pinyin`、`jyutping`等〕1. _`reverse_lookup_translator`_ 反查翻譯器，用另一種編碼方案查碼
+
+1. **`lua_translator`** 使用`lua`自定義輸入，例如動態輸入當前日期、時間，後接`@`+`lua`函數名
+
+   - `lua`函數名即用戶文件夾內`rime.lua`中函數名，參數爲`(input, seg, env)`
+   - 可以`env.engine.context:get_option("option_name")`方式綁定到`switch`開關／`key_binder`快捷鍵
 
 ### 四、`filters`
 
-- 这批组件过滤翻译的结果
+- 這批組件過濾翻譯的結果，自定義濾鏡皆可使用開關調控
 
-1.  **`simplifier`** 用字转换
-2.  `uniquifier` 过滤重复的候选字，有可能来自**`simplifier`**
-3.  `cjk_minifier` 字符集过滤〔用于`script_translator`，使之支援`extended_charset`开关〕
-4.  **`reverse_lookup_filter`** 反查滤镜，以更灵活的方式反查，Rime1.0 后替代 _`reverse_lookup_translator`_
-    - 此项可加载多个实例，后接`@`+滤镜名〔如：`pinyin_lookup`、`jyutping_lookup`等〕
-5.  **`single_char_filter`** 单字过滤器，如加载此组件，则屏敝词典中的词组〔仅`table_translator`有效〕
+1. `uniquifier` 過濾重複的候選字，有可能來自**`simplifier`**
+2. `cjk_minifier` 字符集過濾〔僅用於`script_translator`，使之支援`extended_charset`開關〕
+3. **`single_char_filter`** 單字過濾器，如加載此組件，則屛敝詞典中的詞組〔僅`table_translator`有效〕
+4. **`simplifier`** 用字轉換
+5. **`reverse_lookup_filter`** 反查濾鏡，以更靈活的方式反查，Rime1.0 後替代*`reverse_lookup_translator`*
+
+   - 此項可加載多個實例，後接`@`+濾鏡名〔如：`pinyin_lookup`、`jyutping_lookup`等〕
+
+6. **`lua_filter`** 使用`lua`自定義過濾，例如過濾字符集、調整排序，後接`@`+`lua`函數名
+
+   - `lua`函數名即用戶文件夾內`rime.lua`中函數名，參數爲`(input, env)`
+   - 可以`env.engine.context:get_option("option_name")`方式綁定到`switch`開關／`key_binder`快捷鍵
 
 #### **示例**
 
-```yaml
-# cangjie6.schema.yaml
+cangjie6.schema.yaml
 
+```yaml
 engine:
   processors:
     - ascii_composer
@@ -173,6 +198,7 @@ engine:
     - script_translator@jyutping
     - script_translator@pinyin_lookup
     - script_translator@jyutping_lookup
+    - lua_translator@get_date
   filters:
     - simplifier@zh_simp
     - uniquifier
@@ -180,13 +206,14 @@ engine:
     - reverse_lookup_filter@middle_chinese
     - reverse_lookup_filter@pinyin_reverse_lookup
     - reverse_lookup_filter@jyutping_reverse_lookup
+    - lua_filter@single_char_first
 ```
 
-## 细项配置
+## 細項配置
 
-- 凡`comment_format`、`preedit_format`、`speller/algebra`所用之正则表达式，请参阅[“Perl 正则表达式”](http://www.boost.org/doc/libs/1_49_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html)
+- 凡`comment_format`、`preedit_format`、`speller/algebra`所用之正則表達式，請參閱[「Perl 正則表達式」](http://www.boost.org/doc/libs/1_49_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html)
 
-**引擎中所举之加粗者均可在下方详细描述，格式为：**
+**引擎中所舉之加粗者均可在下方詳細描述，格式爲：**
 
 ```yaml
 name:
@@ -203,29 +230,32 @@ name:
 
 ### 一、`speller`
 
-1. `alphabet:` 定义本方案输入键
-2. `initials:` 定义仅作始码之键
-3. `finals:` 定义仅作末码之键
-4. `delimiter:` 上屏时的音节间分音符
-5. `algebra:` 拼写运算规则，由之算出的拼写汇入`prism`中
-6. `max_code_length:` 形码最大码长，超过则顶字上屏〔`number`〕
-7. `auto_select:` 自动上屏〔`true`或`false`〕
-8. `auto_select_pattern:` 自动上屏规则，以正则表达式描述，当输入串可以被匹配时自动顶字上屏。
-9. `use_space:` 以空格作输入码〔`true`或`false`〕
+1. `alphabet:` 定義本方案輸入鍵
+2. `initials:` 定義僅作始碼之鍵
+3. `finals:` 定義僅作末碼之鍵
+4. `delimiter:` 上屛時的音節間分音符
+5. `algebra:` 拼寫運算規則，由之算出的拼寫匯入`prism`中
+6. `max_code_length:` 形碼最大碼長，超過則頂字上屛〔`number`〕
+7. `auto_select:` 自動上屛〔`true`或`false`〕
+8. `auto_select_pattern:` 自動上屏規則，以正則表達式描述，當輸入串可以被匹配時自動頂字上屏。
+9. `use_space:` 以空格作輸入碼〔`true`或`false`〕
 
 - `speller`的演算包含：
-  - `xform`: 改写〔不保留原形〕
-  - `derive`: 衍生〔保留原形〕
-  - `abbrev`: 简拼〔出字优先级较上两组更低〕
-  - `fuzz`: 略拼〔此种简拼仅组词，不出单字〕
-  - `xlit`: 变换〔适合大量一对一变换〕
-  - `erase`: 删除
+
+```
+xform --改寫〔不保留原形〕
+derive --衍生〔保留原形〕
+abbrev --簡拼〔出字優先級較上兩組更低〕
+fuzz --畧拼〔此種簡拼僅組詞，不出單字〕
+xlit --變換〔適合大量一對一變換〕
+erase --刪除
+```
 
 #### **示例**
 
-```yaml
-# luna_pinyin.schema.yaml
+luna_pinyin.schema.yaml
 
+```yaml
 speller:
   alphabet: zyxwvutsrqponmlkjihgfedcba
   delimiter: " '"
@@ -247,30 +277,28 @@ speller:
 
 ### 二、`segmentor`
 
-- `segmentor`配合`recognizer`标记出`tag`。这里会用到`affix_segmentor`和`abc_translator`
-- `tag`用在`translator`、`reverse_lookup_filter`、`simplifier`中用以标定各自作用范围
-- 如果不需要用到`extra_tags`则不需要单独配置`segmentor`
+- `segmentor`配合`recognizer`標記出`tag`。這裏會用到`affix_segmentor`和`abc_segmentor`
+- `tag`用在`translator`、`reverse_lookup_filter`、`simplifier`中用以標定各自作用範圍
+- 如果不需要用到`extra_tags`則不需要單獨配置`segmentor`
 
-1. `tag:` 设定其`tag`
-2. `prefix:` 设定其前缀标识，可不塡，不塡则无前缀
-3. `suffix:` 设定其尾缀标识，可不塡，不塡则无尾缀
-4. `tips:` 设定其输入前提示符，可不塡，不塡则无提示符
-5. `closing_tips:` 设定其结束输入提示符，可不塡，不塡则无提示符
-6. `extra_tags:` 为此`segmentor`所标记的段落插上其它`tag`
+1. `tag:` 設定其`tag`
+2. `prefix:` 設定其前綴標識，可不塡，不塡則無前綴
+3. `suffix:` 設定其尾綴標識，可不塡，不塡則無尾綴
+4. `tips:` 設定其輸入前提示符，可不塡，不塡則無提示符
+5. `closing_tips:` 設定其結束輸入提示符，可不塡，不塡則無提示符
+6. `extra_tags:` 爲此`segmentor`所標記的段落插上其它`tag`
 
-**当`affix_segmentor`和`translator`重名时，两者可并在一处配置，此处 1-5 条对应下面 19-23 条。`abc_segmentor`仅可设`extra_tags`**
+**當`affix_segmentor`和`translator`重名時，兩者可併在一處配置，此處 1-5 條對應下面 19-23 條。`abc_segmentor`僅可設`extra_tags`**#### **示例**
 
-#### **示例**
+cangjie6.schema.yaml
 
 ```yaml
-# cangjie6.schema.yaml
-
 reverse_lookup:
   tag: reverse_lookup
-  prefix: '`'
-  suffix: ';'
-  tips: '【反查】'
-  closing_tips: '【苍颉】'
+  prefix: "`"
+  suffix: ";"
+  tips: "【反查】"
+  closing_tips: "【蒼頡】"
   extra_tags:
     - pinyin_lookup
     - jyutping_lookup
@@ -278,38 +306,43 @@ reverse_lookup:
 
 ### 三、`translator`
 
-- 每个方案有一个主`translator`，在引擎列表中不以`@`+翻译器名定义，在细项配置时直接以`translator:`命名。以下加粗项为可在主`translator`中定义之项，其它可在副〔以`@`+翻译器名命名〕`translator`中定义
+- 每個方案有一個主`translator`，在引擎列表中不以`@`+翻譯器名定義，在細項配置時直接以`translator:`命名。以下加粗項爲可在主`translator`中定義之項，其它可在副〔以`@`+翻譯器名命名〕`translator`中定義
 
-1. **`enable_charset_filter:`** 是否开启字符集过滤〔仅`table_translator`有效。启用`cjk_minifier`后可适用于`script_translator`〕
-2. **`enable_encoder:`** 是否开启自动造词〔仅`table_translator`有效〕
-3. **`encode_commit_history:`** 是否对已上屏词自动成词〔仅`table_translator`有效〕
-4. **`max_phrase_length:`** 最大自动成词词长〔仅`table_translator`有效〕
-5. **`enable_completion:`** 提前显示尚未输入完整码的字〔仅`table_translator`有效〕
-6. **`sentence_over_completion:`** 在无全码对应字而仅有逐键提示时也开启智能组句〔仅`table_translator`有效〕
-7. **`strict_spelling:`** 配合`speller`中的`fuzz`规则，仅以略拼码组词〔仅`table_translator`有效〕
-8. **`disable_user_dict_for_patterns:`** 禁止某些编码录入用户词典
-9. **`enable_sentence:`** 是否开启自动造句
-10. **`enable_user_dict:`** 是否开启用户词典〔用户词典记录动态字词频、用户词〕
-    - 以上选塡`true`或`false`
-11. **`dictionary:`** 翻译器将调取此字典文件
-12. **`prism:`** 设定由此主翻译器的`speller`生成的棱镜文件名，或此副编译器调用的棱镜名
-13. **`user_dict:`** 设定用户词典名
-14. **`db_class:`** 设定用户词典类型，可设`tabledb`〔文本〕或`userdb`〔二进制〕
-15. **`preedit_format:`** 上屏码自定义
-16. **`comment_format:`** 提示码自定义
-17. **`spelling_hints:`** 设定多少字以内候选标注完整带调拼音〔仅`script_translator`有效〕
-18. **`initial_quality:`** 设定此翻译器出字优先级
-19. `tag:` 设定此翻译器针对的`tag`。可不塡，不塡则仅针对`abc`
-20. `prefix:` 设定此翻译器的前缀标识，可不塡，不塡则无前缀
-21. `suffix:` 设定此翻译器的尾缀标识，可不塡，不塡则无尾缀
-22. `tips:` 设定此翻译器的输入前提示符，可不塡，不塡则无提示符
-23. `closing_tips:` 设定此翻译器的结束输入提示符，可不塡，不塡则无提示符
+1. **`enable_charset_filter:`** 是否開啓字符集過濾〔僅`table_translator`有效。啓用`cjk_minifier`後可適用於`script_translator`〕
+2. **`enable_encoder:`** 是否開啓自動造詞〔僅`table_translator`有效〕
+3. **`encode_commit_history:`** 是否對已上屛詞自動成詞〔僅`table_translator`有效〕
+4. **`max_phrase_length:`** 最大自動成詞詞長〔僅`table_translator`有效〕
+5. **`enable_completion:`** 提前顯示尚未輸入完整碼的字〔僅`table_translator`有效〕
+6. **`sentence_over_completion:`** 在無全碼對應字而僅有逐鍵提示時也開啓智能組句〔僅`table_translator`有效〕
+7. **`strict_spelling:`** 配合`speller`中的`fuzz`規則，僅以畧拼碼組詞〔僅`table_translator`有效〕
+8. **`disable_user_dict_for_patterns:`** 禁止某些編碼錄入用戶詞典
+9. **`enable_sentence:`** 是否開啓自動造句
+10. **`enable_user_dict:`** 是否開啓用戶詞典〔用戶詞典記錄動態字詞頻、用戶詞〕
+
+    - 以上選塡`true`或`false`
+
+11. **`dictionary:`** 翻譯器將調取此字典文件
+12. **`prism:`** 設定由此主翻譯器的`speller`生成的棱鏡文件名，或此副編譯器調用的棱鏡名
+13. **`user_dict:`** 設定用戶詞典名
+14. **`db_class:`** 設定用戶詞典類型，可設`tabledb`〔文本〕或`userdb`〔二進制〕
+15. **`preedit_format:`** 上屛碼自定義
+16. **`comment_format:`** 提示碼自定義
+17. **`spelling_hints:`** 設定多少字以內候選標註完整帶調拼音〔僅`script_translator`有效〕
+18. **`initial_quality:`** 設定此翻譯器出字優先級
+19. `tag:` 設定此翻譯器針對的`tag`。可不塡，不塡則僅針對`abc`
+20. `prefix:` 設定此翻譯器的前綴標識，可不塡，不塡則無前綴
+21. `suffix:` 設定此翻譯器的尾綴標識，可不塡，不塡則無尾綴
+22. `tips:` 設定此翻譯器的輸入前提示符，可不塡，不塡則無提示符
+23. `closing_tips:` 設定此翻譯器的結束輸入提示符，可不塡，不塡則無提示符
+24. `contextual_suggestions:` 是否使用語言模型優化輸出結果〔需配合`grammar`使用〕
+25. `max_homophones:` 最大同音簇長度〔需配合`grammar`使用〕
+26. `max_homographs:` 最大同形簇長度〔需配合`grammar`使用〕
 
 #### **示例**
 
-```yaml
-# cangjie6.schema.yaml 苍颉主翻译器
+cangjie6.schema.yaml 蒼頡主翻譯器
 
+```yaml
 translator:
   dictionary: cangjie6
   enable_charset_filter: true
@@ -320,34 +353,34 @@ translator:
   preedit_format:
     - xform/^([a-z ])$/$1｜\U$1\E/
     - xform/(?<=[a-z])\s(?=[a-z])//
-    - 'xlit|ABCDEFGHIJKLMNOPQRSTUVWXYZ|日月金木水火土竹戈十大中一弓人心手口尸廿山女田止卜片|'
+    - "xlit|ABCDEFGHIJKLMNOPQRSTUVWXYZ|日月金木水火土竹戈十大中一弓人心手口尸廿山女田止卜片|"
   comment_format:
-    - 'xlit|abcdefghijklmnopqrstuvwxyz~|日月金木水火土竹戈十大中一弓人心手口尸廿山女田止卜片・|'
+    - "xlit|abcdefghijklmnopqrstuvwxyz~|日月金木水火土竹戈十大中一弓人心手口尸廿山女田止卜片・|"
   disable_user_dict_for_patterns:
-    - '^z.$'
+    - "^z.$"
   initial_quality: 0.75
 ```
 
-```yaml
-# cangjie6.schema.yaml 拼音副翻译器
+cangjie6.schema.yaml 拼音副翻譯器
 
+```yaml
 pinyin:
   tag: pinyin
   dictionary: luna_pinyin
   enable_charset_filter: true
-  prefix: 'P' #须配合recognizer
-  suffix: ';' #须配合recognizer
+  prefix: 'P' #須配合recognizer
+  suffix: ';' #須配合recognizer
   preedit_format:
-    - 'xform/([nl])v/$1ü/'
-    - 'xform/([nl])ue/$1üe/'
-    - 'xform/([jqxy])v/$1u/'
-  tips: '【汉拼】'
-  closing_tips: '【苍颉】'
+    - "xform/([nl])v/$1ü/"
+    - "xform/([nl])ue/$1üe/"
+    - "xform/([jqxy])v/$1u/"
+  tips: "【漢拼】"
+  closing_tips: "【蒼頡】"
 ```
 
-```yaml
-# pinyin_simp.schema.yaml 拼音・简化字主翻译器
+pinyin_simp.schema.yaml 拼音・簡化字主翻譯器
 
+```yaml
 translator:
   dictionary: luna_pinyin
   prism: luna_pinyin_simp
@@ -357,11 +390,11 @@ translator:
     - xform/([jqxy])v/$1u/
 ```
 
-```yaml
-# luna_pinyin.schema.yaml 朙月拼音用户短语
+luna_pinyin.schema.yaml 朙月拼音用戶短語
 
-custom_phrase: #这是一个table_translator
-  dictionary: ''
+```yaml
+custom_phrase: #這是一個table_translator
+  dictionary: ""
   user_dict: custom_phrase
   db_class: tabledb
   enable_sentence: false
@@ -371,310 +404,469 @@ custom_phrase: #这是一个table_translator
 
 ### 四、`reverse_lookup_filter`
 
-- 此滤镜须挂在`translator`上，不影响该`translator`工作
+- 此濾鏡須掛在`translator`上，不影響該`translator`工作
 
-1.  `tags:` 设定其作用范围
-2.  `overwrite_comment:` 是否覆盖其他提示
-3.  `dictionary:` 反查所得提示码之码表
-4.  `comment_format:` 自定义提示码格式
+1. `tags:` 設定其作用範圍
+2. `overwrite_comment:` 是否覆蓋其他提示
+3. `dictionary:` 反查所得提示碼之碼表
+4. `comment_format:` 自定義提示碼格式
 
 #### **示例**
 
-```yaml
-# cangjie6.schema.yaml
+cangjie6.schema.yaml
 
-pinyin_reverse_lookup: #该反查滤镜名
-  tags: [pinyin_lookup] #挂在这个tag所对应的翻译器上
+```yaml
+pinyin_reverse_lookup: #該反查濾鏡名
+  tags: [ pinyin_lookup ] #掛在這個tag所對應的翻譯器上
   overwrite_comment: true
-  dictionary: cangjie6 #反查所得为苍颉码
+  dictionary: cangjie6 #反查所得爲蒼頡碼
   comment_format:
-    - 'xform/$/〕/'
-    - 'xform/^/〔/'
-    - 'xlit|abcdefghijklmnopqrstuvwxyz |日月金木水火土竹戈十大中一弓人心手口尸廿山女田止卜片、|'
+    - "xform/$/〕/"
+    - "xform/^/〔/"
+    - "xlit|abcdefghijklmnopqrstuvwxyz |日月金木水火土竹戈十大中一弓人心手口尸廿山女田止卜片、|"
 ```
 
 ### 五、`simplifier`
 
-1.  `option_name:` 对应`switches`中设定的切换项名
-2.  `opencc_config:` 用字转换配置文件
-    - 位于：`rime_dir/opencc/`，自带之配置文件含：
-      - 繁转简〔默认〕：`t2s.json`
-      - 繁转台湾：`t2tw.json`
-      - 繁转香港：`t2hk.json`
-      - 简转繁：`s2t.json`
-3.  `tags:` 设定转换范围
-4.  `tips:` 设定是否提示转换前的字，可塡`none`〔或不塡〕、`char`〔仅对单字有效〕、`all`
-5.  `show_in_comment:` 设定是否仅将转换结果显示在备注中
-6.  _`excluded_types:`_ 取消特定范围
-    〔一般为 _`reverse_lookup_translator`_〕转化用字
+1. `option_name:` 對應`switches`中設定的切換項名，暨`key_binder/binding`中所用名
+2. `opencc_config:` 用字轉換配置文件
+
+   - 位於：`rime_dir/opencc/`，自帶之配置文件含：
+
+     1. 繁轉簡〔默認〕：`t2s.json`
+     2. 繁轉臺灣：`t2tw.json`
+     3. 繁轉香港：`t2hk.json`
+     4. 簡轉繁：`s2t.json`
+
+3. `tags:` 設定轉換範圍
+4. `tips:` 設定是否提示轉換前的字，可塡`none`〔或不塡〕、`char`〔僅對單字有效〕、`all`
+5. `comment_format:` 自定義提示碼格式
+6. `allow_erase_comment:` 是否允許返回空提示碼〔默認`false`〕
+7. `show_in_comment:` 設定是否僅將轉換結果顯示在備注中
+8. _`excluded_types:`_ 取消特定範圍〔一般爲 _`reverse_lookup_translator`_ 〕轉化用字
 
 #### **示例**
 
+修改自 luna_pinyin_kunki.schema
+
 ```yaml
-# 修改自 luna\_pinyin\_kunki.schema
 zh_tw:
   option_name: zh_tw
   opencc_config: t2tw.json
-  tags: [abc] #abc对应abc_segmentor
+  tags: [ abc ] #abc對應abc_segmentor
   tips: none
+  allow_erase_comment: true
+  comment_format:
+    - xform/.*//
 ```
 
-### 六、 _`chord_composer`_
+### _六、`chord_composer`_
 
-- 并击把键盘分两半，相当于两块键盘。两边同时击键，系统默认在其中一半上按的键先于另一半，由此得出上屏码
+- 並擊把鍵盤分兩半，相當於兩塊鍵盤。兩邊同時擊鍵，系統默認在其中一半上按的鍵先於另一半，由此得出上屛碼
 
-1.  `alphabet:` 字母表，包含用于并击的按键。击键虽有先后，形成并击时，一律以字母表顺序排列
-2.  `algebra:` 拼写运算规则，将一组并击编码转换为拼音音节
-3.  `output_format:` 并击完成后套用的式样，追加隔音符号
-4.  `prompt_format:` 并击过程中套用的式样，加方括弧
+1. `alphabet:` 字母表，包含用於並擊的按鍵。擊鍵雖有先後，形成並擊時，一律以字母表順序排列
+2. `algebra:` 拼寫運算規則，將一組並擊編碼轉換爲拼音音節
+3. `output_format:` 並擊完成後套用的式樣，追加隔音符號
+4. `prompt_format:` 並擊過程中套用的式樣，加方括弧
 
 #### **示例**
 
-```yaml
-# combo_pinyin.schema.yaml
+combo_pinyin.schema.yaml
 
+```yaml
 chord_composer:
-  # 字母表，包含用于并击的按键
-  # 击键虽有先后，形成并击时，一律以字母表顺序排列
+  # 字母表，包含用於並擊的按鍵
+  # 擊鍵雖有先後，形成並擊時，一律以字母表順序排列
   alphabet: "swxdecfrvgtbnjum ki,lo."
-  # 拼写运算规则，将一组并击编码转换为拼音音节
+  # 拼寫運算規則，將一組並擊編碼轉換爲拼音音節
   algebra:
-    # 先将物理按键字符对应到宫保拼音键位中的拼音字母
+    # 先將物理按鍵字符對應到宮保拼音鍵位中的拼音字母
     - 'xlit|swxdecfrvgtbnjum ki,lo.|sczhlfgdbktpRiuVaNIUeoE|'
-    # 以下根据宫保拼音的键位分别变换声母、韵母部分
-    # 组合声母
+    # 以下根據宮保拼音的鍵位分別變換聲母、韻母部分
+    # 組合聲母
     - xform/^zf/zh/
     - xform/^cl/ch/
     - xform/^fb/m/
     - xform/^ld/n/
     - xform/^hg/r/
     ……
-    # 声母独用时补足隠含的韵母
+    # 聲母獨用時補足隠含的韻母
     - xform/^([bpf])$/$1u/
     - xform/^([mdtnlgkh])$/$1e/
     - xform/^([mdtnlgkh])$/$1e/
     - xform/^([zcsr]h?)$/$1i/
-  # 并击完成后套用的式样，追加隔音符号
+  # 並擊完成後套用的式樣，追加隔音符號
   output_format:
     - "xform/^([a-z]+)$/$1'/"
-  # 并击过程中套用的式样，加方括弧
+  # 並擊過程中套用的式樣，加方括弧
   prompt_format:
     - "xform/^(.*)$/[$1]/"
 ```
 
-### 七、其它
+### 七、`lua`
 
-- 包括`recognizer`、`key_binder`、`punctuator`。**标点**、**快捷键**、**二三选重**、**特殊字符**等均于此设置
+- 請參攷[hchunhui/librime-lua](https://github.com/hchunhui/librime-lua) 以尋求更多靈感。
 
-1.  **`import_preset:`** 由外部统一文件导入
-2.  `recognizer:` 下设`patterns:` 配合`segmentor`的`prefix`和`suffix`完成段落划分、`tag`分配
-    - `:`前字段可以为以`affix_segmentor@someTag`定义的`Tag`名，或者`punct`、`reverse_lookup`两个内设的字段。其它字段不调用输入法引擎，输入即输出〔如`url`等字段〕
-3.  `key_binder:` 下设`bindings:` 设置功能性快捷键
-
-    - 每一条`binding`可能包含：
-      ```
-      accept: 实际所按之键
-      send: 输出效果
-      toggle: 切换开关
-      when: 作用范围
-      ```
-      > 〔`send`和`toggle`二选一〕
-    - `toggle`可用字段包含五个开关名
-    - `when`可用字段包含：
-      ```
-      paging: 翻䈎用
-      has_menu: 操作候选项用
-      composing: 操作输入码用
-      always: 全域
-      ```
-    - `accept`和`send`可用字段除 A-Za-z0-9 外，还包含以下键板上实际有的键：
-
-      ```
-      BackSpace: 退格
-      Tab: 水平定位符
-      Linefeed: 换行
-      Clear: 清除
-      Return: 回车
-      Pause: 暂停
-      Sys_Req: 印屏
-      Escape: 退出
-      Delete: 删除
-      Home: 原位
-      Left: 左箭头
-      Up: 上箭头
-      Right: 右箭头
-      Down: 下箭头
-      Prior、Page_Up: 上翻
-      Next、Page_Down: 下翻
-      End: 末位
-      Begin: 始位
-      Shift_L: 左Shift
-      Shift_R: 右Shift
-      Control_L: 左Ctrl
-      Control_R: 右Ctrl
-      Meta_L: 左Meta
-      Meta_R: 右Meta
-      Alt_L: 左Alt
-      Alt_R: 右Alt
-      Super_L: 左Super
-      Super_R: 右Super
-      Hyper_L: 左Hyper
-      Hyper_R: 右Hyper
-      Caps_Lock: 大写锁
-      Shift_Lock: 上档锁
-      Scroll_Lock: 滚动锁
-      Num_Lock: 小键板锁
-      Select: 选定
-      Print: 列印
-      Execute: 执行
-      Insert: 插入
-      Undo: 还原
-      Redo: 重做
-      Menu: 菜单
-      Find: 蒐寻
-      Cancel: 取消
-      Help: 帮助
-      Break: 中断
-
-      space:
-      exclam: !
-      quotedbl: "
-      numbersign: #
-      dollar: $
-      percent: %
-      ampersand: &
-      apostrophe: '
-      parenleft: (
-      parenright: )
-      asterisk: *
-      plus: +
-      comma: ,
-      minus: -
-      period: .
-      slash: /
-      colon: :
-      semicolon: ;
-      less: <
-      equal: =
-      greater: >
-      question: ?
-      at: @
-      bracketleft: [
-      backslash: \
-      bracketright: ]
-      asciicircum: ^
-      underscore: _
-      grave: `
-      braceleft: {
-      bar: |
-      braceright: }
-      asciitilde: ~
-
-      KP_Space: 小键板空格
-      KP_Tab: 小键板水平定位符
-      KP_Enter: 小键板回车
-      KP_Delete: 小键板删除
-      KP_Home: 小键板原位
-      KP_Left: 小键板左箭头
-      KP_Up: 小键板上箭头
-      KP_Right: 小键板右箭头
-      KP_Down: 小键板下箭头
-      KP_Prior、KP_Page_Up: 小键板上翻
-      KP_Next、KP_Page_Down: 小键板下翻
-      KP_End: 小键板末位
-      KP_Begin: 小键板始位
-      KP_Insert: 小键板插入
-      KP_Equal: 小键板等于
-      KP_Multiply: 小键板乘号
-      KP_Add: 小键板加号
-      KP_Subtract: 小键板减号
-      KP_Divide: 小键板除号
-      KP_Decimal: 小键板小数点
-      KP_0: 小键板0
-      KP_1: 小键板1
-      KP_2: 小键板2
-      KP_3: 小键板3
-      KP_4: 小键板4
-      KP_5: 小键板5
-      KP_6: 小键板6
-      KP_7: 小键板7
-      KP_8: 小键板8
-      KP_9: 小键板9
-      ```
-
-4.  `editor`用以订制操作键〔不支持`import_preset:`〕，键板键名同`key_binder/bindings`中的`accept`和`send`，效果定义如下：
-    ```
-    confirm: 上屏候选项
-    commit_comment: 上屏候选项备注
-    commit_raw_input: 上屏原始输入
-    commit_script_text: 上屏变换后输入
-    commit_composition: 语句流单字上屏
-    revert: 撤消上次输入
-    back: 按字符回退
-    back_syllable: 按音节回退
-    delete_candidate: 删除候选项
-    delete: 向后删除
-    cancel: 取消输入
-    noop: 空
-    ```
-5.  `punctuator:` 下设`full_shape:`和`half_shape:`分别控制全角模式下的符号和半角模式下的符号，另有`use_space:`空格顶字〔`true`或`false`〕
-    - 每条标点项可加`commit`直接上屏和`pair`交替上屏两种模式，默认为选单模式
+1. `lua_translator`
+2. `lua_filter`
+3. `lua_processor`
+4. `lua_segmentor`
 
 #### **示例**
 
-```yaml
-# 修改自 cangjie6.schema.yaml
+rime.lua
 
+```lua
+function get_date(input, seg, env)
+  --- 以 show_date 爲開關名或 key_binder 中 toggle 的對象
+  on = env.engine.context:get_option("show_date")
+  if (on and input == "date") then
+    --- Candidate(type, start, end, text, comment)
+    yield(Candidate("date", seg.start, seg._end, os.date("%Y年%m月%d日"), " 日期"))
+  end
+end
+---
+function single_char_first(input, env)
+  --- 以 single_char 爲開關名或 key_binder 中 toggle 的對象
+  on = env.engine.context:get_option("single_char")
+  local cache = {}
+  for cand in input:iter() do
+    if (not on or utf8.len(cand.text) == 1) then
+      yield(cand)
+    else
+      table.insert(cache, cand)
+    end
+  end
+  for i, cand in ipairs(cache) do
+    yield(cand)
+  end
+end
+```
+
+### 八、其它
+
+- 包括`recognizer`、`key_binder`、`punctuator`。 **標點** 、 **快捷鍵** 、 **二三選重** 、**特殊字符**等均於此設置
+
+1. **`import_preset:`** 由外部統一文件導入
+
+2. `grammar:` 下設：
+
+   - `language:` 取值`zh-han[ts]-t-essay-bg[wc]`
+   - `collocation_max_length:` 最大搭配長度（整句輸入可忽畧此項）
+   - `collocation_min_length:` 最小搭配長度（整句輸入可忽畧此項）
+
+3. `recognizer:` 下設`patterns:` 配合`segmentor`的`prefix`和`suffix`完成段落劃分、`tag`分配
+
+   - 前字段可以爲以`affix_segmentor@someTag`定義的`Tag`名，或者`punct`、`reverse_lookup`兩個內設的字段。其它字段不調用輸入法引擎，輸入即輸出〔如`url`等字段〕
+
+4. `key_binder:` 下設`bindings:` 設置功能性快捷鍵
+
+   - 每一條`binding`包含：`when`作用範圍、`accept`實際所按之鍵，以及期望的操作
+
+   - 操作可爲以下任意一個：`send`輸出按鍵、`toggle`切換開關、`send_sequence`輸出一串按鍵、`set_option`開某多選開關、`unset_option`關某多選開關、`select`選候選字
+
+     - `toggle`可用字段包含各開關名
+
+     - `set_option`、`unset_option`可用字段包含多選開關名
+
+     - `when`可用字段包含：
+
+       ```
+       paging	翻䈎用
+       has_menu	操作候選項用
+       composing	操作輸入碼用
+       always	全域
+       ```
+
+     - `accept`和`send`可用字段除 A-Za-z0-9 外，還包含以下鍵板上實際有的鍵：
+
+       ```
+       BackSpace	退格
+       Tab	水平定位符
+       Linefeed	换行
+       Clear	清除
+       Return	回車
+       Pause	暫停
+       Sys_Req	印屏
+       Escape	退出
+       Delete	刪除
+       Home	原位
+       Left	左箭頭
+       Up	上箭頭
+       Right	右箭頭
+       Down	下箭頭
+       Prior、Page_Up	上翻
+       Next、Page_Down	下翻
+       End	末位
+       Begin	始位
+       Shift_L	左Shift
+       Shift_R	右Shift
+       Control_L	左Ctrl
+       Control_R	右Ctrl
+       Meta_L	左Meta
+       Meta_R	右Meta
+       Alt_L	左Alt
+       Alt_R	右Alt
+       Super_L	左Super
+       Super_R	右Super
+       Hyper_L	左Hyper
+       Hyper_R	右Hyper
+       Caps_Lock	大寫鎖
+       Shift_Lock	上檔鎖
+       Scroll_Lock	滾動鎖
+       Num_Lock	小鍵板鎖
+       Select	選定
+       Print	列印
+       Execute	執行
+       Insert	插入
+       Undo	還原
+       Redo	重做
+       Menu	菜單
+       Find	蒐尋
+       Cancel	取消
+       Help	幫助
+       Break	中斷
+       space
+       exclam	!
+       quotedbl	"
+       numbersign	#
+       dollar	$
+       percent	%
+       ampersand	&
+       apostrophe	'
+       parenleft	(
+       parenright	)
+       asterisk	*
+       plus	+
+       comma	,
+       minus	-
+       period	.
+       slash	/
+       colon	:
+       semicolon	;
+       less	<
+       equal	=
+       greater	>
+       question	?
+       at	@
+       bracketleft	[
+       backslash
+       bracketright	]
+       asciicircum	^
+       underscore	_
+       grave	`
+       braceleft	{
+       bar	|
+       braceright	}
+       asciitilde	~
+       KP_Space	小鍵板空格
+       KP_Tab	小鍵板水平定位符
+       KP_Enter	小鍵板回車
+       KP_Delete	小鍵板刪除
+       KP_Home	小鍵板原位
+       KP_Left	小鍵板左箭頭
+       KP_Up	小鍵板上箭頭
+       KP_Right	小鍵板右箭頭
+       KP_Down	小鍵板下箭頭
+       KP_Prior、KP_Page_Up	小鍵板上翻
+       KP_Next、KP_Page_Down	小鍵板下翻
+       KP_End	小鍵板末位
+       KP_Begin	小鍵板始位
+       KP_Insert	小鍵板插入
+       KP_Equal	小鍵板等於
+       KP_Multiply	小鍵板乘號
+       KP_Add	小鍵板加號
+       KP_Subtract	小鍵板減號
+       KP_Divide	小鍵板除號
+       KP_Decimal	小鍵板小數點
+       KP_0	小鍵板0
+       KP_1	小鍵板1
+       KP_2	小鍵板2
+       KP_3	小鍵板3
+       KP_4	小鍵板4
+       KP_5	小鍵板5
+       KP_6	小鍵板6
+       KP_7	小鍵板7
+       KP_8	小鍵板8
+       KP_9	小鍵板9
+       ```
+
+5. `editor`用以訂製操作鍵〔不支持`import_preset:`〕，鍵板鍵名同`key_binder/bindings`中的`accept`和`send`，效果定義如下：
+
+   ```
+   confirm	上屏候選項
+   commit_comment	上屏候選項備注
+   commit_raw_input	上屏原始輸入
+   commit_script_text	上屏變換後輸入
+   commit_composition	語句流單字上屏
+   revert	撤消上次輸入
+   back	按字符回退
+   back_syllable	按音節回退
+   delete_candidate	刪除候選項
+   delete	向後刪除
+   cancel	取消輸入
+   noop	空
+   ```
+
+6. `punctuator:` 下設`full_shape:`和`half_shape:`分别控制全角模式下的符號和半角模式下的符號，另有`use_space:`空格頂字〔`true`或`false`〕
+
+   - 每條標點項可加`commit`直接上屏和`pair`交替上屏兩種模式，默認爲選單模式
+
+#### **示例**
+
+修改自 cangjie6.schema.yaml
+
+```yaml
 key_binder:
   import_preset: default
   bindings:
-    - { accept: semicolon, send: 2, when: has_menu } #分号选第二重码
-    - { accept: apostrophe, send: 3, when: has_menu } #引号选第三重码
-    - { accept: 'Control+1', select: .next, when: always }
-    - { accept: 'Control+2', toggle: full_shape, when: always }
-    - { accept: 'Control+3', toggle: simplification, when: always }
-    - { accept: 'Control+4', toggle: extended_charset, when: always }
-
+    - {accept: semicolon, send: 2, when: has_menu} #分號選第二重碼
+    - {accept: apostrophe, send: 3, when: has_menu} #引號選第三重碼
+    - {accept: "Control+1", select: .next, when: always}
+    - {accept: "Control+2", toggle: full_shape, when: always}
+    - {accept: "Control+3", toggle: simplification, when: always}
+    - {accept: "Control+4", toggle: extended_charset, when: always}
 editor:
   bindings:
     Return: commit_comment
-
 punctuator:
   import_preset: symbols
   half_shape:
-    "'": { pair: ['“', '”'] } #第一次按是“，第二次是”
-    '(': ['〔', '［'] #弹出选单
-    .: { commit: '。' } #无选单，直接上屏。优先级最高
-
+    "'": {pair: ["「", "」"]} #第一次按是「，第二次是」
+    "(": ["〔", "［"] #彈出選單
+    .: {commit: "。"} #無選單，直接上屛。優先級最高
 recognizer:
   import_preset: default
   patterns:
-    email: '^[a-z][-_.0-9a-z]*@.*$'
-    url: '^(www[.]|https?:|ftp:|mailto:).*$'
-    reverse_lookup: '`[a-z]*;?$'
-    pinyin_lookup: '`P[a-z]*;?$'
-    jyutping_lookup: '`J[a-z]*;?$'
+    email: "^[a-z][-_.0-9a-z]*@.*$"
+    url: "^(www[.]|https?:|ftp:|mailto:).*$"
+    reverse_lookup: "`[a-z]*;?$"
+    pinyin_lookup: "`P[a-z]*;?$"
+    jyutping_lookup: "`J[a-z]*;?$"
     pinyin: "(?<!`)P[a-z']*;?$"
     jyutping: "(?<!`)J[a-z']*;?$"
-    punct: '/[a-z]*$' #配合symbols.yaml中的特殊字符输入
+    punct: "/[a-z]*$" #配合symbols.yaml中的特殊字符輸入
 ```
 
 ## 其它
 
-- Rime 还为每个方案提供选单和一定的外观订制能力
-- 通常情况下`menu`在`default.yaml`中定义〔或用户修改档`default.custom.yaml`〕，`style`在`squirrel.yaml`或`weasel.yaml`〔或用户修改档`squirrel.custom.yaml`或`weasel.custom.yaml`〕
+- Rime 還爲每個方案提供選單和一定的外觀訂製能力
+- 通常情況下`menu`在`default.yaml`中定義〔或用戶修改檔`default.custom.yaml`〕，`style`在`squirrel.yaml`或`weasel.yaml`〔或用戶修改檔`squirrel.custom.yaml`或`weasel.custom.yaml`〕
 
 #### **示例**
 
 ```yaml
 menu:
-  alternative_select_keys: ASDFGHJKL #如编码字符占用数字键则须另设选字键
-  page_size: 5 #选单每䈎显示个数
-
+  alternative_select_labels: [ ①, ②, ③, ④, ⑤, ⑥, ⑦, ⑧, ⑨ ]  # 修改候選標籤
+  alternative_select_keys: ASDFGHJKL #如編碼字符佔用數字鍵則須另設選字鍵
+  page_size: 5 #選單每䈎顯示個數
 style:
-  font_face: 'HanaMinA, HanaMinB' #字体〔小狼毫得且仅得设一个字体；鼠须管得设多个字体，后面的字体自动补前面字体不含的字〕
-  font_point: 15 #字号
-  horizontal: false #横／直排
+  font_face: "HanaMinA, HanaMinB" #字體〔小狼毫得且僅得設一個字體；鼠鬚管得設多個字體，後面的字體自動補前面字體不含的字〕
+  font_point: 15 #字號
+  label_format: '%s'  # 候選標籤格式
+  horizontal: false #橫／直排
   line_spacing: 1 #行距
-  inline_preedit: true #输入码内嵌
+  inline_preedit: true #輸入碼內嵌
 ```
+
+# `Dict.yaml` 詳解
+
+## 開始之前
+
+```
+# Rime dict
+# encoding: utf-8
+〔你還可以在這註釋字典來源、變動記錄等〕
+```
+
+## 描述檔
+
+1. `name:` 內部字典名，也即`schema`所引用的字典名，確保與文件名相一致
+2. `version:` 如果發佈，請確保每次改動陞版本號
+
+#### **示例**
+
+```
+name: "cangjie6.extended"
+version: "0.1"
+```
+
+## 配置
+
+1. `sort:` 字典**初始**排序，可選`original`或`by_weight`
+2. `use_preset_vocabulary:` 是否引入「八股文」〔含字詞頻、詞庫〕
+3. `max_phrase_length:` 配合`use_preset_vocabulary:`，設定導入詞條最大詞長
+4. `min_phrase_weight:` 配合`use_preset_vocabulary:`，設定導入詞條最小詞頻
+5. `columns:` 定義碼表以`Tab`分隔出的各列，可設`text`【文本】、`code`【碼】、`weight`【權重】、`stem`【造詞碼】
+6. `import_tables:` 加載其它外部碼表
+7. `encoder:` 形碼造詞規則
+
+   1. `exclude_patterns:`
+   2. `rules:` 可用`length_equal:`和`length_in_range:`定義。大寫字母表示字序，小寫字母表示其所跟隨的大寫字母所以表的字中的編碼序
+   3. `tail_anchor:` 造詞碼包含結構分割符〔僅用於倉頡〕
+   4. `exclude_patterns` 取消某編碼的造詞資格
+
+#### **示例**
+
+cangjie6.extended.dict.yaml
+
+```yaml
+sort: by_weight
+use_preset_vocabulary: false
+import_tables:
+  - cangjie6 #單字碼表由cangjie6.dict.yaml導入
+columns: #此字典爲純詞典，無單字編碼，僅有字和詞頻
+  - text #字／詞
+  - weight #字／詞頻
+encoder:
+  exclude_patterns:
+    - '^z.*$'
+  rules:
+    - length_equal: 2 #對於二字詞
+      formula: "AaAzBaBbBz" #取第一字首尾碼、第二字首次尾碼
+    - length_equal: 3 #對於三字詞
+      formula: "AaAzBaYzZz" #取第一字首尾碼、第二字首尾碼、第三字尾碼
+    - length_in_range: [4, 5] #對於四至五字詞
+      formula: "AaBzCaYzZz" #取第一字首碼，第二字尾碼、第三字首碼、倒數第二字尾碼、最後一字尾碼
+  tail_anchor: "'"
+```
+
+## 碼表
+
+- 以`Tab`分隔各列，各列依`columns:`定義排列。
+
+#### **示例**
+
+cangjie6.dict.yaml
+
+```yaml
+columns:
+  - text #第一列字／詞
+  - code #第二列碼
+  - weight #第三列字／詞頻
+  - stem #第四列造詞碼
+```
+
+cangjie6.dict.yaml
+
+```
+個	owjr	246268	ow'jr
+看	hqbu	245668
+中	l	243881
+呢	rsp	242970
+來	doo	235101
+嗎	rsqf	221092
+爲	bhnf	211340
+會	owfa	209844
+她	vpd	204725
+與	xyc	203975
+給	vfor	193007
+等	hgdi	183340
+這	yymr	181787
+用	bq	168934	b'q
+```
+
+---
+
+雪齋  
+09-Nov-2013
